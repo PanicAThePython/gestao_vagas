@@ -39,6 +39,7 @@ public class AuthCompanyUseCase {
 
         if (!passwordMatches) throw new AuthenticationException();
 
+        var roles = Arrays.asList("COMPANY");
         Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
         var expiresIn = Instant.now().plus(Duration.ofHours(2));
         var token = JWT.create().withIssuer("javagas")
@@ -50,6 +51,7 @@ public class AuthCompanyUseCase {
         var authCompanyResponse = AuthCompanyResponseDTO.builder()
                 .access_token(token)
                 .expires_in(expiresIn.toEpochMilli())
+                .roles(roles)
                 .build();
         return authCompanyResponse;
     }
